@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:shelf/shelf.dart';
 import 'apis/estado_api.dart';
 import 'apis/imoveis_api.dart';
@@ -13,7 +15,7 @@ void main() async {
   CustomEnv.fromFile('.env-dev');
 
   final _di = Injects.initialize();
-
+  
   var cascadeHandler = Cascade()
       .add(_di.get<LoginApi>().getHandler())
       .add(_di.get<NoticiasApi>().getHandler(isSecurity: false))
