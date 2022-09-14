@@ -15,7 +15,8 @@ void main() async {
   CustomEnv.fromFile('.env-dev');
 
   final _di = Injects.initialize();
-  
+  final ip = InternetAddress.anyIPv4;
+
   var cascadeHandler = Cascade()
       .add(_di.get<LoginApi>().getHandler())
       .add(_di.get<NoticiasApi>().getHandler(isSecurity: false))
@@ -32,7 +33,7 @@ void main() async {
 
   await CustomServer().initialize(
     handler: handler,
-    address: await CustomEnv.getKey(key: 'server_address'),
+    address: ip.toString(), //await CustomEnv.getKey(key: 'server_address'),
     port: await CustomEnv.getKey(key: 'server_port'),
   );
 }
