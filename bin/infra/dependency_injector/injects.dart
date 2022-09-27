@@ -1,23 +1,19 @@
 import '../../apis/estado_api.dart';
 import '../../apis/imoveis_api.dart';
-import '../../apis/noticias_api.dart';
 import '../../apis/login_api.dart';
 import '../../apis/usuario_api.dart';
 import '../../dao/estado_dao.dart';
 import '../../dao/imagem_dao.dart';
 import '../../dao/imovel_dao.dart';
-import '../../dao/noticia_dao.dart';
 import '../../dao/usuario_dao.dart';
 import '../../models/estado_model.dart';
 import '../../models/imagem_model.dart';
 import '../../models/imovel_model.dart';
-import '../../models/noticia_model.dart';
 import '../../services/estado_service.dart';
 import '../../services/generic_service.dart';
 import '../../services/imagem_service.dart';
 import '../../services/imovel_service.dart';
 import '../../services/login_service.dart';
-import '../../services/noticia_service.dart';
 import '../../services/usuario_service.dart';
 import '../database/db_configuration.dart';
 import '../database/mysql_db_configuration.dart';
@@ -30,16 +26,7 @@ class Injects {
     var di = DependencyInjector();
 
     di.register<DBConfiguration>(() => MySqlDBConfiguration());
-    di.register<SecurityService>(() => SecurityServiceImp());
-
-    // noticias
-    di.register<NoticiaDAO>(() => NoticiaDAO(di<DBConfiguration>()));
-    di.register<GenericService<NoticiaModel>>(
-      () => NoticiaService(di<NoticiaDAO>()),
-    );
-    di.register<NoticiasApi>(
-      () => NoticiasApi(di<GenericService<NoticiaModel>>()),
-    );
+    di.register<SecurityService>(() => SecurityServiceImp());  
 
     // imoveis
     di.register<ImovelDAO>(() => ImovelDAO(di<DBConfiguration>()));
