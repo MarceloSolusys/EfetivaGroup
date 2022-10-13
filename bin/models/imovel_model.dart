@@ -2,6 +2,7 @@ import 'imagem_model.dart';
 
 class ImovelModel {
   int? codigo;
+  String? tipo;
   String? observacoes;
   int? financiavel;
   String? medida;
@@ -32,17 +33,17 @@ class ImovelModel {
     for (var item in itens) {
       imagens.add(ImagemModel.fromRequest(item));
     }
-
     return ImovelModel()
       ..codigo = int.parse(map['codigo'])
+      ..tipo = (map['tipo'])
       ..observacoes = (map['observacoes'])
       ..financiavel = (map['financiavel'])
       ..medida = (map['medida'])
-      ..area_total = (map['area_total'])
+      ..area_total = double.tryParse(map['area_total'].toString())
       ..imovel_comodidades = (map['imovel_comodidades'])
       ..status = (map['status'])
       ..valor_venda_visivel = (map['valor_venda_visivel'])
-      ..valor_venda = double.parse(map['valor_venda'].toString())
+      ..valor_venda = double.tryParse(map['valor_venda'].toString())
       ..forma_pagamento = (map['endereco_complemento'])
       ..atividade_rural = (map['rural']['atividade_rural'])
       ..permuta = (map['permuta'])
@@ -61,14 +62,15 @@ class ImovelModel {
   factory ImovelModel.fromMap(Map map) {
     return ImovelModel()
       ..codigo = (map['codigo'])
+      ..tipo = (map['tipo'])
       ..observacoes = (map['observacoes']).toString()
       ..financiavel = (map['financiavel'])
       ..medida = (map['medida'])
-      ..area_total = (map['area_total'])
+      ..area_total = double.tryParse(map['area_total'].toString())
       ..imovel_comodidades = (map['imovel_comodidades'])
       ..status = (map['status'])
       ..valor_venda_visivel = (map['valor_venda_visivel'] == '1') ? true : false
-      ..valor_venda = double.parse(map['valor_venda'].toString())
+      ..valor_venda = double.tryParse(map['valor_venda'].toString())
       ..forma_pagamento = (map['forma_pagamento'])
       ..atividade_rural = (map['atividade_rural'])
       ..permuta = (map['permuta'] == '0') ? true : false
@@ -86,6 +88,7 @@ class ImovelModel {
   Map toJson() {
     return {
       'codigo': codigo,
+      'tipo': tipo,
       'observacoes': observacoes,
       'financiavel': financiavel,
       'medida': medida,
@@ -94,7 +97,7 @@ class ImovelModel {
       'status': status,
       'valor_venda_visivel': valor_venda_visivel,
       'valor_venda': valor_venda,
-      'forma_pagamento':forma_pagamento,
+      'forma_pagamento': forma_pagamento,
       'atividade_rural': atividade_rural,
       'permuta': permuta,
       'destaque': destaque,

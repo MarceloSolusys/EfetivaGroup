@@ -143,9 +143,6 @@ class ImovelDAO implements DAO<ImovelModel> {
       sql = "${sql} offset ${offset} ";
     }
     var result = await _dbConfiguration.execQuery(sql);
-    print(sql);
-
-
     return result
         .map((r) => ImovelModel.fromMap(r.fields))
         .toList()

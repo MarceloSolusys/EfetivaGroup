@@ -95,24 +95,29 @@ class ImovelApi extends Api {
 
     router.put('/imoveis', (Request req) async {
       List<ImovelModel> imoveis = await ImovelOut().getImoveis();
+      int updateLength = 0;
       var result;
       if (imoveis.isNotEmpty) {
         //deletando todos as imagens
         await _imagemService.deleteAll();
         //deletando todos os imoveis
         await _imovelService.deleteAll();
-
         for (var imovel in imoveis) {
-          result = await _imovelService.save(imovel);
-          for (var imagem in imovel.imagens!) {
-            imagem.codigo_imovel = imovel.codigo;
-            await _imagemService.save(imagem);
+          if (imovel.tipo == 'Rural') {
+            updateLength = updateLength + 1;
+            result = await _imovelService.save(imovel);
+            for (var imagem in imovel.imagens!) {
+              imagem.codigo_imovel = imovel.codigo;
+              await _imagemService.save(imagem);
+            }
           }
         }
       }
-      return result ? Response(200) : Response(500);
-    }
-    );
+      return result
+          ? Response.ok(jsonEncode(
+              {'result': '${updateLength} Imoveis Atualizados com Sucesso'}))
+          : Response(500);
+    });
 
     router.delete('/imoveis', (Request req) async {
       String? id = req.url.queryParameters['id'];
