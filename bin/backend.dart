@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:shelf/shelf.dart';
 import 'apis/estado_api.dart';
 import 'apis/imoveis_api.dart';
@@ -25,14 +23,11 @@ void main() async {
       .addMiddleware(MInterception.contentTypeJson) // global Middlewares
       .addMiddleware(MInterception.cors) // global Middlewares
       .addHandler(cascadeHandler);
-
-  var env = Platform.environment;
-var port = env.entries.firstWhere((element)=> element.key == 'PORT', orElse: () => MapEntry('PORT', '8080'));
-
+      
 
   await CustomServer().initialize(
     handler: handler,
     address: await CustomEnv.getKey(key: 'server_address'),
-    port: await CustomEnv.getKey(key: port.value),
+    port: await CustomEnv.getKey(key: 'server_port'),
   );
 }
