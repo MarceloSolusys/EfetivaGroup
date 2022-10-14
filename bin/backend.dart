@@ -26,9 +26,13 @@ void main() async {
       .addMiddleware(MInterception.cors) // global Middlewares
       .addHandler(cascadeHandler);
 
+  var env = Platform.environment;
+var port = env.entries.firstWhere((element)=> element.key == 'PORT', orElse: () => MapEntry('PORT', '8080'));
+
+
   await CustomServer().initialize(
     handler: handler,
     address: await CustomEnv.getKey(key: 'server_address'),
-    port: await CustomEnv.getKey(key: 'server_port'),
+    port: await CustomEnv.getKey(key: port.value),
   );
 }
