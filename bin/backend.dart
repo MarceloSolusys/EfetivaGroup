@@ -27,7 +27,7 @@ void main() async {
       .addHandler(cascadeHandler);
       
   var portEnv = Platform.environment['PORT'];
-  var port = portEnv == null ? 443 : int.parse(portEnv);
+  var port = portEnv == null ? 8080 : int.parse(portEnv);
 
 
   await CustomServer().initialize(
