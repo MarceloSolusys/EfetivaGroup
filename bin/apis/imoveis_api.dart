@@ -65,14 +65,6 @@ class ImovelApi extends Api {
         imovel.imagens = await _imagemService.findByImovel(imovel.codigo!);
       }
       imoveisMap = imoveis.map((e) => e.toJson()).toList();
-      print(await _imovelService.countCustomQuery(
-          id_estado,
-          id_cidade,
-          finalidade,
-          area_inicio,
-          area_fim,
-          valor_venda_inicio,
-          valor_venda_fim));
       int length = await _imovelService.countCustomQuery(
           id_estado,
           id_cidade,
@@ -81,7 +73,6 @@ class ImovelApi extends Api {
           area_fim,
           valor_venda_inicio,
           valor_venda_fim);
-
       return Response.ok(jsonEncode({'length': length, 'data': imoveisMap}));
     });
 

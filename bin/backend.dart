@@ -21,18 +21,19 @@ void main() async {
       .handler;
 
   var handler = Pipeline()
-      .addMiddleware(logRequests()) // global Middlewares
+      //.addMiddleware(logRequests()) // global Middlewares
       .addMiddleware(MInterception.contentTypeJson) // global Middlewares
       .addMiddleware(MInterception.cors) // global Middlewares
       .addHandler(cascadeHandler);
-      
-  var portEnv = Platform.environment['PORT'];
-  var port = portEnv == null ? 8080 : int.parse(portEnv);
 
+  var portEnv = Platform.environment['PORT'];
+  var port = portEnv == null
+      ? await CustomEnv.getKey(key: 'server_port')
+      : int.parse(portEnv);
 
   await CustomServer().initialize(
     handler: handler,
     address: await CustomEnv.getKey(key: 'server_address'),
-    port: port,//await CustomEnv.getKey(key: 'server_port'),
+    port: port,
   );
 }
