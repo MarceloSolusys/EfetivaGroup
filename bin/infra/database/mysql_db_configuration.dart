@@ -34,6 +34,8 @@ class MySqlDBConfiguration implements DBConfiguration {
     return await conn.query(sql, params);
   }*/
 
+  //update conexao
+
   @override
   Future<Results> execQuery(String sql, [List? params]) async {
     var conn = await createConnection();
