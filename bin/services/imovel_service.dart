@@ -31,7 +31,8 @@ class ImovelService implements ImovelInterface {
   }
 
   Future<List<ImovelModel>> findByCustomQuery(
-      int id_estado,
+      tipo,
+      id_estado,
       id_cidade,
       finalidade,
       area_inicio,
@@ -41,6 +42,7 @@ class ImovelService implements ImovelInterface {
       limit,
       offset) async {
     return _imovelDAO.findByCustomQuery(
+        tipo,
         id_estado,
         id_cidade,
         finalidade,
@@ -59,6 +61,7 @@ class ImovelService implements ImovelInterface {
 
   @override
   Future countCustomQuery(
+      String tipo,
       int id_estado,
       int id_cidade,
       String finalidade,
@@ -66,7 +69,7 @@ class ImovelService implements ImovelInterface {
       double area_fim,
       double valor_venda_inicio,
       double valor_venda_fim) {
-    return _imovelDAO.countCustomQuery(id_estado, id_cidade, finalidade,
+    return _imovelDAO.countCustomQuery(tipo, id_estado, id_cidade, finalidade,
         area_inicio, area_fim, valor_venda_inicio, valor_venda_fim);
   }
 }

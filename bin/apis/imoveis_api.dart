@@ -19,6 +19,9 @@ class ImovelApi extends Api {
   }) {
     Router router = Router();
     router.get('/imoveis', (Request req) async {
+      String? tipo = (req.url.queryParameters['tipo'] != null)
+          ? req.url.queryParameters['tipo']
+          : '';
       int? id_estado = (req.url.queryParameters['id_estado'] != null)
           ? int.parse(req.url.queryParameters['id_estado']!)
           : 0;
@@ -52,6 +55,7 @@ class ImovelApi extends Api {
       List<Map> imoveisMap = [];
       List<ImovelModel> imoveis = [];
       imoveis = await _imovelService.findByCustomQuery(
+          tipo!,
           id_estado,
           id_cidade,
           finalidade!,
@@ -66,6 +70,7 @@ class ImovelApi extends Api {
       }
       imoveisMap = imoveis.map((e) => e.toJson()).toList();
       int length = await _imovelService.countCustomQuery(
+          tipo,
           id_estado,
           id_cidade,
           finalidade,
@@ -94,14 +99,20 @@ class ImovelApi extends Api {
         //deletando todos os imoveis
         await _imovelService.deleteAll();
         for (var imovel in imoveis) {
-          if (imovel.tipo == 'Rural') {
+          updateLength = updateLength + 1;
+          result = await _imovelService.save(imovel);
+          for (var imagem in imovel.imagens!) {
+            imagem.codigo_imovel = imovel.codigo;
+            await _imagemService.save(imagem);
+          }
+          /*if (imovel.tipo == 'Rural') {
             updateLength = updateLength + 1;
             result = await _imovelService.save(imovel);
             for (var imagem in imovel.imagens!) {
               imagem.codigo_imovel = imovel.codigo;
               await _imagemService.save(imagem);
             }
-          }
+          }*/
         }
       }
       return result

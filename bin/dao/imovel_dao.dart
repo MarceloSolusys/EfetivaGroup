@@ -12,7 +12,7 @@ class ImovelDAO implements DAO<ImovelModel> {
       'insert into imoveis (codigo, observacoes, financiavel, medida, area_total, ' +
           'imovel_comodidades, status, valor_venda_visivel, valor_venda, atividade_rural, permuta, ' +
           'destaque, destaque_fim, endereco_estado, endereco_cidade, id_estado, id_cidade, titulo_anuncio, ' +
-          'descricao_anuncio, endereco_logradouro, forma_pagamento ) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )',
+          'descricao_anuncio, endereco_logradouro, forma_pagamento, tipo ) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )',
       [
         value.codigo,
         value.observacoes,
@@ -34,7 +34,8 @@ class ImovelDAO implements DAO<ImovelModel> {
         value.titulo_anuncio,
         value.descricao_anuncio,
         value.endereco_logradouro,
-        value.forma_pagamento
+        value.forma_pagamento,
+        value.tipo
       ],
     );
     return result.affectedRows > 0;
@@ -78,9 +79,12 @@ class ImovelDAO implements DAO<ImovelModel> {
         .cast<ImovelModel>();
   }
 
-  String returnSqlCustomQuery(id_estado, id_cidade, finalidade, area_inicio,
-      area_fim, valor_venda_inicio, valor_venda_fim) {
+  String returnSqlCustomQuery(tipo, id_estado, id_cidade, finalidade,
+      area_inicio, area_fim, valor_venda_inicio, valor_venda_fim) {
     String sql = "";
+    if (tipo.isNotEmpty) {
+      sql = "${sql} and tipo = ${tipo}";
+    }
     if (id_estado > 0) {
       sql = "${sql} and id_estado = ${id_estado} ";
     }
@@ -104,10 +108,11 @@ class ImovelDAO implements DAO<ImovelModel> {
       sql =
           "${sql} and valor_venda <=  ${valor_venda_fim} and valor_venda_visivel = 1 ";
     }
-    return sql;    
+    return sql;
   }
 
   Future<int> countCustomQuery(
+      String tipo,
       int id_estado,
       int id_cidade,
       String finalidade,
@@ -117,13 +122,14 @@ class ImovelDAO implements DAO<ImovelModel> {
       double valor_venda_fim) async {
     String sql = "select count(codigo) as length from imoveis where 1=1 ";
     sql =
-        "${sql} ${returnSqlCustomQuery(id_estado, id_cidade, finalidade, area_inicio, area_fim, valor_venda_inicio, valor_venda_fim)}";
+        "${sql} ${returnSqlCustomQuery(tipo, id_estado, id_cidade, finalidade, area_inicio, area_fim, valor_venda_inicio, valor_venda_fim)}";
 
     var result = await _dbConfiguration.execQuery(sql);
     return result.first['length'];
   }
 
   Future<List<ImovelModel>> findByCustomQuery(
+      tipo,
       id_estado,
       id_cidade,
       finalidade,
@@ -135,7 +141,7 @@ class ImovelDAO implements DAO<ImovelModel> {
       offset) async {
     String sql = "SELECT * FROM imoveis where 1=1";
     sql =
-        "${sql} ${returnSqlCustomQuery(id_estado, id_cidade, finalidade, area_inicio, area_fim, valor_venda_inicio, valor_venda_fim)}";
+        "${sql} ${returnSqlCustomQuery(tipo, id_estado, id_cidade, finalidade, area_inicio, area_fim, valor_venda_inicio, valor_venda_fim)}";
     if (limit > 0) {
       sql = "${sql} limit ${limit} ";
     }
@@ -155,7 +161,7 @@ class ImovelDAO implements DAO<ImovelModel> {
       'update imoveis set codigo = ?, observacoes= ?, financiavel= ?, medida= ?, area_total= ?, ' +
           'imovel_comodidades= ?, status= ?, valor_venda_visivel= ?, valor_venda= ?, atividade_rural= ?, permuta= ?, ' +
           'destaque= ?, destaque_fim= ?, endereco_estado= ?, endereco_cidade= ?, id_estado= ?, id_cidade= ?, titulo_anuncio= ?, ' +
-          'descricao_anuncio= ?, endereco_logradouro= ?, forma_pagamento= ?',
+          'descricao_anuncio= ?, endereco_logradouro= ?, forma_pagamento= ?, tipo= ?',
       [
         value.codigo,
         value.observacoes,
@@ -177,7 +183,8 @@ class ImovelDAO implements DAO<ImovelModel> {
         value.titulo_anuncio,
         value.descricao_anuncio,
         value.endereco_logradouro,
-        value.forma_pagamento
+        value.forma_pagamento,
+        value.tipo
       ],
     );
     return result.affectedRows > 0;
