@@ -24,6 +24,11 @@ class ImovelModel {
   String? descricao_anuncio;
   String? endereco_logradouro; //Utilizado para breve descrição do imóvel
   List<ImagemModel>? imagens;
+  int? dormitorios;
+  int? suites;
+  int? banheiros;
+  int? garagens;
+  String? endereco_bairro;
 
   ImovelModel();
 
@@ -56,7 +61,12 @@ class ImovelModel {
       ..titulo_anuncio = (map['titulo_anuncio'])
       ..descricao_anuncio = (map['descricao_anuncio'])
       ..endereco_logradouro = (map['endereco_logradouro'])
-      ..imagens = imagens;
+      ..imagens = imagens
+      ..dormitorios = (map['dormitorios'])
+      ..suites = (map['suites'])
+      ..banheiros = (map['banheiros'])
+      ..garagens = (map['garagens'])
+      ..endereco_bairro = (map['endereco_bairro']);
   }
 
   factory ImovelModel.fromMap(Map map) {
@@ -82,7 +92,12 @@ class ImovelModel {
       ..id_cidade = (map['id_cidade'])
       ..titulo_anuncio = (map['titulo_anuncio'])
       ..descricao_anuncio = (map['descricao_anuncio']).toString()
-      ..endereco_logradouro = (map['endereco_logradouro']).toString();
+      ..endereco_logradouro = (map['endereco_logradouro']).toString()
+      ..dormitorios = (map['dormitorios'])
+      ..suites = (map['suites'])
+      ..banheiros = (map['banheiros'])
+      ..garagens = (map['garagens'])
+      ..endereco_bairro = (map['endereco_bairro']);
   }
 
   Map toJson() {
@@ -109,7 +124,12 @@ class ImovelModel {
       'titulo_anuncio': titulo_anuncio,
       'descricao_anuncio': descricao_anuncio,
       'endereco_logradouro': endereco_logradouro,
-      'imagens': imagens
+      'imagens': imagens,
+      'dormitorios': dormitorios,
+      'suites': suites,
+      'banheiros': banheiros,
+      'garagens': garagens,
+      'endereco_bairro': endereco_bairro
     };
   }
 }

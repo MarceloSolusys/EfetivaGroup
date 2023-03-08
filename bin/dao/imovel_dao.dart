@@ -12,7 +12,8 @@ class ImovelDAO implements DAO<ImovelModel> {
       'insert into imoveis (codigo, observacoes, financiavel, medida, area_total, ' +
           'imovel_comodidades, status, valor_venda_visivel, valor_venda, atividade_rural, permuta, ' +
           'destaque, destaque_fim, endereco_estado, endereco_cidade, id_estado, id_cidade, titulo_anuncio, ' +
-          'descricao_anuncio, endereco_logradouro, forma_pagamento, tipo ) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )',
+          'descricao_anuncio, endereco_logradouro, forma_pagamento, tipo, dormitorios, suites, banheiros, garagens, endereco_bairro) values '
+              '(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )',
       [
         value.codigo,
         value.observacoes,
@@ -35,7 +36,12 @@ class ImovelDAO implements DAO<ImovelModel> {
         value.descricao_anuncio,
         value.endereco_logradouro,
         value.forma_pagamento,
-        value.tipo
+        value.tipo,
+        value.dormitorios,
+        value.suites,
+        value.banheiros,
+        value.garagens,
+        value.endereco_bairro
       ],
     );
     return result.affectedRows > 0;
@@ -161,7 +167,7 @@ class ImovelDAO implements DAO<ImovelModel> {
       'update imoveis set codigo = ?, observacoes= ?, financiavel= ?, medida= ?, area_total= ?, ' +
           'imovel_comodidades= ?, status= ?, valor_venda_visivel= ?, valor_venda= ?, atividade_rural= ?, permuta= ?, ' +
           'destaque= ?, destaque_fim= ?, endereco_estado= ?, endereco_cidade= ?, id_estado= ?, id_cidade= ?, titulo_anuncio= ?, ' +
-          'descricao_anuncio= ?, endereco_logradouro= ?, forma_pagamento= ?, tipo= ?',
+          'descricao_anuncio= ?, endereco_logradouro= ?, forma_pagamento= ?, tipo= ?, dormitorios= ?, suites= ?, banheiros= ?, garagens= ?, endereco_bairro= ?, ',
       [
         value.codigo,
         value.observacoes,
@@ -184,7 +190,12 @@ class ImovelDAO implements DAO<ImovelModel> {
         value.descricao_anuncio,
         value.endereco_logradouro,
         value.forma_pagamento,
-        value.tipo
+        value.tipo,
+        value.dormitorios,
+        value.suites,
+        value.banheiros,
+        value.garagens,
+        value.endereco_bairro
       ],
     );
     return result.affectedRows > 0;

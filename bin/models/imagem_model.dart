@@ -1,7 +1,7 @@
 class ImagemModel {
   int? id;
   String? link;
-  int? titulo;
+  String? titulo;
   String? link_thumb;
   int? codigo_imovel;
 
