@@ -51,6 +51,22 @@ class ImovelApi extends Api {
       int? offset = (req.url.queryParameters['offset'] != null)
           ? int.parse(req.url.queryParameters['offset']!)
           : 0;
+      int? dormitorios = (req.url.queryParameters['dormitorios'] != null)
+          ? int.parse(req.url.queryParameters['dormitorios']!)
+          : 0;
+      int? suites = (req.url.queryParameters['suites'] != null)
+          ? int.parse(req.url.queryParameters['suites']!)
+          : 0;
+      int? banheiros = (req.url.queryParameters['banheiros'] != null)
+          ? int.parse(req.url.queryParameters['banheiros']!)
+          : 0;
+      int? garagens = (req.url.queryParameters['garagens'] != null)
+          ? int.parse(req.url.queryParameters['garagens']!)
+          : 0;
+      String? endereco_bairro =
+          (req.url.queryParameters['endereco_bairro'] != null)
+              ? req.url.queryParameters['endereco_bairro']
+              : '';
 
       List<Map> imoveisMap = [];
       List<ImovelModel> imoveis = [];
@@ -63,6 +79,11 @@ class ImovelApi extends Api {
           area_fim,
           valor_venda_inicio,
           valor_venda_fim,
+          dormitorios,
+          suites,
+          banheiros,
+          garagens,
+          endereco_bairro!,
           limit,
           offset);
       for (var imovel in imoveis) {
@@ -70,14 +91,20 @@ class ImovelApi extends Api {
       }
       imoveisMap = imoveis.map((e) => e.toJson()).toList();
       int length = await _imovelService.countCustomQuery(
-          tipo,
-          id_estado,
-          id_cidade,
-          finalidade,
-          area_inicio,
-          area_fim,
-          valor_venda_inicio,
-          valor_venda_fim);
+        tipo,
+        id_estado,
+        id_cidade,
+        finalidade,
+        area_inicio,
+        area_fim,
+        valor_venda_inicio,
+        valor_venda_fim,
+        dormitorios,
+        suites,
+        banheiros,
+        garagens,
+        endereco_bairro,
+      );
       return Response.ok(jsonEncode({'length': length, 'data': imoveisMap}));
     });
 

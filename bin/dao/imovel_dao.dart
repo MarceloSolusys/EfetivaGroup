@@ -85,9 +85,37 @@ class ImovelDAO implements DAO<ImovelModel> {
         .cast<ImovelModel>();
   }
 
-  String returnSqlCustomQuery(tipo, id_estado, id_cidade, finalidade,
-      area_inicio, area_fim, valor_venda_inicio, valor_venda_fim) {
+  String returnSqlCustomQuery(
+    tipo,
+    id_estado,
+    id_cidade,
+    finalidade,
+    area_inicio,
+    area_fim,
+    valor_venda_inicio,
+    valor_venda_fim,
+    dormitorios,
+    suites,
+    banheiros,
+    garagens,
+    endereco_bairro,
+  ) {
     String sql = "";
+    if (dormitorios > 0) {
+      sql = "${sql} and dormitorios >= ${dormitorios} ";
+    }
+    if (suites > 0) {
+      sql = "${sql} and suites >= ${suites} ";
+    }
+    if (banheiros > 0) {
+      sql = "${sql} and banheiros >= ${banheiros} ";
+    }
+    if (garagens > 0) {
+      sql = "${sql} and garagens >= ${garagens} ";
+    }
+    if (endereco_bairro.isNotEmpty) {
+      sql = "${sql} and endereco_bairro like '%${endereco_bairro}%'";
+    }
     if (tipo.isNotEmpty) {
       sql = "${sql} and tipo = ${tipo}";
     }
@@ -118,36 +146,48 @@ class ImovelDAO implements DAO<ImovelModel> {
   }
 
   Future<int> countCustomQuery(
-      String tipo,
-      int id_estado,
-      int id_cidade,
-      String finalidade,
-      double area_inicio,
-      double area_fim,
-      double valor_venda_inicio,
-      double valor_venda_fim) async {
+    String tipo,
+    int id_estado,
+    int id_cidade,
+    String finalidade,
+    double area_inicio,
+    double area_fim,
+    double valor_venda_inicio,
+    double valor_venda_fim,
+    int dormitorios,
+    int suites,
+    int banheiros,
+    int garagens,
+    String endereco_bairro,
+  ) async {
     String sql = "select count(codigo) as length from imoveis where 1=1 ";
     sql =
-        "${sql} ${returnSqlCustomQuery(tipo, id_estado, id_cidade, finalidade, area_inicio, area_fim, valor_venda_inicio, valor_venda_fim)}";
+        "${sql} ${returnSqlCustomQuery(tipo, id_estado, id_cidade, finalidade, area_inicio, area_fim, valor_venda_inicio, valor_venda_fim, dormitorios, suites, banheiros, garagens, endereco_bairro)}";
 
     var result = await _dbConfiguration.execQuery(sql);
     return result.first['length'];
   }
 
   Future<List<ImovelModel>> findByCustomQuery(
-      tipo,
-      id_estado,
-      id_cidade,
-      finalidade,
-      area_inicio,
-      area_fim,
-      valor_venda_inicio,
-      valor_venda_fim,
-      limit,
-      offset) async {
+    tipo,
+    id_estado,
+    id_cidade,
+    finalidade,
+    area_inicio,
+    area_fim,
+    valor_venda_inicio,
+    valor_venda_fim,
+    dormitorios,
+    suites,
+    banheiros,
+    garagens,
+    endereco_bairro,
+    limit,
+    offset,
+  ) async {
     String sql = "SELECT * FROM imoveis where 1=1";
     sql =
-        "${sql} ${returnSqlCustomQuery(tipo, id_estado, id_cidade, finalidade, area_inicio, area_fim, valor_venda_inicio, valor_venda_fim)}";
+        "${sql} ${returnSqlCustomQuery(tipo, id_estado, id_cidade, finalidade, area_inicio, area_fim, valor_venda_inicio, valor_venda_fim, dormitorios, suites, banheiros, garagens, endereco_bairro)}";
     if (limit > 0) {
       sql = "${sql} limit ${limit} ";
     }

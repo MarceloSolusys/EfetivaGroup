@@ -39,6 +39,11 @@ class ImovelService implements ImovelInterface {
       area_fim,
       valor_venda_inicio,
       valor_venda_fim,
+      dormitorios,
+      suites,
+      banheiros,
+      garagens,
+      endereco_bairro,
       limit,
       offset) async {
     return _imovelDAO.findByCustomQuery(
@@ -50,6 +55,11 @@ class ImovelService implements ImovelInterface {
         area_fim,
         valor_venda_inicio,
         valor_venda_fim,
+        dormitorios,
+        suites,
+        banheiros,
+        garagens,
+        endereco_bairro,
         limit,
         offset);
   }
@@ -68,8 +78,25 @@ class ImovelService implements ImovelInterface {
       double area_inicio,
       double area_fim,
       double valor_venda_inicio,
-      double valor_venda_fim) {
-    return _imovelDAO.countCustomQuery(tipo, id_estado, id_cidade, finalidade,
-        area_inicio, area_fim, valor_venda_inicio, valor_venda_fim);
+      double valor_venda_fim,
+      int dormitorios,
+      int suites,
+      int banheiros,
+      int garagens,
+      String endereco_bairro) {
+    return _imovelDAO.countCustomQuery(
+        tipo,
+        id_estado,
+        id_cidade,
+        finalidade,
+        area_inicio,
+        area_fim,
+        valor_venda_inicio,
+        valor_venda_fim,
+        dormitorios,
+        suites,
+        banheiros,
+        garagens,
+        endereco_bairro);
   }
 }
