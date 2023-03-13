@@ -1,4 +1,5 @@
 import '../infra/database/db_configuration.dart';
+import '../models/comodidades.dart';
 import '../models/imovel_model.dart';
 import 'dao.dart';
 
@@ -67,6 +68,20 @@ class ImovelDAO implements DAO<ImovelModel> {
         .map((r) => ImovelModel.fromMap(r.fields))
         .toList()
         .cast<ImovelModel>();
+  }
+
+  Future<List<ComodidadeModel>> findComodidades(String tipo) async {
+    String query = '';
+    if (tipo.isNotEmpty) {
+      query = 'where tipo = $tipo';
+    }
+    var result = await _dbConfiguration
+        .execQuery('SELECT imovel_comodidades FROM imoveis $query GROUP BY imovel_comodidades' );
+    print(result);
+    return result
+        .map((r) => ComodidadeModel.fromMap(r.fields))
+        .toList()
+        .cast<ComodidadeModel>();
   }
 
   @override

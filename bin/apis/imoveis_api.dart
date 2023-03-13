@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:shelf/shelf.dart';
 import 'package:shelf_router/shelf_router.dart';
+import '../models/comodidades.dart';
 import '../models/imovel_model.dart';
 import '../services/http/imovel_out.dart';
 import '../services/imagem_inteface.dart';
@@ -106,6 +107,23 @@ class ImovelApi extends Api {
         endereco_bairro,
       );
       return Response.ok(jsonEncode({'length': length, 'data': imoveisMap}));
+    });
+
+    router.get('/comodidades', (Request req) async {
+      String? tipo = req.url.queryParameters['tipo'];
+      tipo == null ? tipo = '' : tipo = tipo;
+      List<ComodidadeModel> listComodidades = [];
+
+      for (var comodidade in await _imovelService.findComodidades(tipo)) {
+        for (var comod in comodidade.nome!.split(',')) {
+          if (!listComodidades.contains(comod) && comod.isNotEmpty) {
+            listComodidades.add(ComodidadeModel(nome: comod));
+          }
+        }
+      }
+
+      return Response.ok(
+          jsonEncode(listComodidades.map((e) => e.toJson()).toList()));
     });
 
     router.post('/imoveis', (Request req) async {

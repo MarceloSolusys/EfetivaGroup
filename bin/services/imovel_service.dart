@@ -99,4 +99,9 @@ class ImovelService implements ImovelInterface {
         garagens,
         endereco_bairro);
   }
+
+  @override
+  Future findComodidades(String tipo) {
+    return _imovelDAO.findComodidades(tipo);
+  }
 }

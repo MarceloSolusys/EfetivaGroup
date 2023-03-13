@@ -3,6 +3,7 @@ import 'generic_service.dart';
 
 abstract class ImovelInterface extends GenericService<ImovelModel> {
   Future findByEstado(int id);
+  Future findComodidades(String tipo);
   Future countCustomQuery(
     String tipo,
     int id_estado,
