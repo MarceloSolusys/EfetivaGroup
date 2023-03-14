@@ -18,6 +18,7 @@ abstract class ImovelInterface extends GenericService<ImovelModel> {
     int banheiros,
     int garagens,
     String endereco_bairro,
+    String comodidades
   );
   Future findByCustomQuery(
       String tipo,
@@ -33,6 +34,7 @@ abstract class ImovelInterface extends GenericService<ImovelModel> {
       int banheiros,
       int garagens,
       String endereco_bairro,
+      String comodidades,
       int limit,
       int offset);
 }

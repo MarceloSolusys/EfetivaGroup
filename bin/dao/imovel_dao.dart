@@ -75,9 +75,8 @@ class ImovelDAO implements DAO<ImovelModel> {
     if (tipo.isNotEmpty) {
       query = 'where tipo = $tipo';
     }
-    var result = await _dbConfiguration
-        .execQuery('SELECT imovel_comodidades FROM imoveis $query GROUP BY imovel_comodidades' );
-    print(result);
+    var result = await _dbConfiguration.execQuery(
+        'SELECT imovel_comodidades FROM imoveis $query GROUP BY imovel_comodidades');
     return result
         .map((r) => ComodidadeModel.fromMap(r.fields))
         .toList()
@@ -114,8 +113,18 @@ class ImovelDAO implements DAO<ImovelModel> {
     banheiros,
     garagens,
     endereco_bairro,
+    comodidades,
   ) {
+    String comodidadesSql = '';
     String sql = "";
+    if (comodidades.isNotEmpty) {
+      for (var comod in comodidades.split(',')) {
+        comodidadesSql =
+            " ${comodidadesSql} and imovel_comodidades like '%${comod}%'";
+      }
+      sql = " ${sql}${comodidadesSql}";
+    }
+
     if (dormitorios > 0) {
       sql = "${sql} and dormitorios >= ${dormitorios} ";
     }
@@ -161,23 +170,23 @@ class ImovelDAO implements DAO<ImovelModel> {
   }
 
   Future<int> countCustomQuery(
-    String tipo,
-    int id_estado,
-    int id_cidade,
-    String finalidade,
-    double area_inicio,
-    double area_fim,
-    double valor_venda_inicio,
-    double valor_venda_fim,
-    int dormitorios,
-    int suites,
-    int banheiros,
-    int garagens,
-    String endereco_bairro,
-  ) async {
+      String tipo,
+      int id_estado,
+      int id_cidade,
+      String finalidade,
+      double area_inicio,
+      double area_fim,
+      double valor_venda_inicio,
+      double valor_venda_fim,
+      int dormitorios,
+      int suites,
+      int banheiros,
+      int garagens,
+      String endereco_bairro,
+      String comodidades) async {
     String sql = "select count(codigo) as length from imoveis where 1=1 ";
     sql =
-        "${sql} ${returnSqlCustomQuery(tipo, id_estado, id_cidade, finalidade, area_inicio, area_fim, valor_venda_inicio, valor_venda_fim, dormitorios, suites, banheiros, garagens, endereco_bairro)}";
+        "${sql} ${returnSqlCustomQuery(tipo, id_estado, id_cidade, finalidade, area_inicio, area_fim, valor_venda_inicio, valor_venda_fim, dormitorios, suites, banheiros, garagens, endereco_bairro, comodidades)}";
 
     var result = await _dbConfiguration.execQuery(sql);
     return result.first['length'];
@@ -197,12 +206,13 @@ class ImovelDAO implements DAO<ImovelModel> {
     banheiros,
     garagens,
     endereco_bairro,
+    comodidades,
     limit,
     offset,
   ) async {
     String sql = "SELECT * FROM imoveis where 1=1";
     sql =
-        "${sql} ${returnSqlCustomQuery(tipo, id_estado, id_cidade, finalidade, area_inicio, area_fim, valor_venda_inicio, valor_venda_fim, dormitorios, suites, banheiros, garagens, endereco_bairro)}";
+        "${sql} ${returnSqlCustomQuery(tipo, id_estado, id_cidade, finalidade, area_inicio, area_fim, valor_venda_inicio, valor_venda_fim, dormitorios, suites, banheiros, garagens, endereco_bairro, comodidades)}";
     if (limit > 0) {
       sql = "${sql} limit ${limit} ";
     }

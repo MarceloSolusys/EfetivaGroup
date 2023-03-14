@@ -20,6 +20,10 @@ class ImovelApi extends Api {
   }) {
     Router router = Router();
     router.get('/imoveis', (Request req) async {
+      String? comodidades = (req.url.queryParameters['comodidades'] != null)
+          ? req.url.queryParameters['comodidades']
+          : '';
+
       String? tipo = (req.url.queryParameters['tipo'] != null)
           ? req.url.queryParameters['tipo']
           : '';
@@ -85,6 +89,7 @@ class ImovelApi extends Api {
           banheiros,
           garagens,
           endereco_bairro!,
+          comodidades!,
           limit,
           offset);
       for (var imovel in imoveis) {
@@ -92,20 +97,20 @@ class ImovelApi extends Api {
       }
       imoveisMap = imoveis.map((e) => e.toJson()).toList();
       int length = await _imovelService.countCustomQuery(
-        tipo,
-        id_estado,
-        id_cidade,
-        finalidade,
-        area_inicio,
-        area_fim,
-        valor_venda_inicio,
-        valor_venda_fim,
-        dormitorios,
-        suites,
-        banheiros,
-        garagens,
-        endereco_bairro,
-      );
+          tipo,
+          id_estado,
+          id_cidade,
+          finalidade,
+          area_inicio,
+          area_fim,
+          valor_venda_inicio,
+          valor_venda_fim,
+          dormitorios,
+          suites,
+          banheiros,
+          garagens,
+          endereco_bairro,
+          comodidades);
       return Response.ok(jsonEncode({'length': length, 'data': imoveisMap}));
     });
 

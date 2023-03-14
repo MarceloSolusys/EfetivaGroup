@@ -44,6 +44,7 @@ class ImovelService implements ImovelInterface {
       banheiros,
       garagens,
       endereco_bairro,
+      comodidades,
       limit,
       offset) async {
     return _imovelDAO.findByCustomQuery(
@@ -60,6 +61,7 @@ class ImovelService implements ImovelInterface {
         banheiros,
         garagens,
         endereco_bairro,
+        comodidades,
         limit,
         offset);
   }
@@ -83,7 +85,8 @@ class ImovelService implements ImovelInterface {
       int suites,
       int banheiros,
       int garagens,
-      String endereco_bairro) {
+      String endereco_bairro,
+      String comodidades) {
     return _imovelDAO.countCustomQuery(
         tipo,
         id_estado,
@@ -97,7 +100,8 @@ class ImovelService implements ImovelInterface {
         suites,
         banheiros,
         garagens,
-        endereco_bairro);
+        endereco_bairro,
+        comodidades);
   }
 
   @override
