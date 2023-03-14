@@ -118,12 +118,13 @@ class ImovelDAO implements DAO<ImovelModel> {
     String comodidadesSql = '';
     String sql = "";
     if (comodidades.isNotEmpty) {
-      for (var comod in comodidades.split(',')) {
+      for (int i = 0; i < comodidades.split(',').length; i++) {
         comodidadesSql =
-            " ${comodidadesSql} and imovel_comodidades like '%${comod}%'";
+            " ${comodidadesSql} ${(i > 0) ? 'or' : 'and'} imovel_comodidades like '%${comodidades.split(',')[i]}%'";
       }
       sql = " ${sql}${comodidadesSql}";
     }
+    print(sql);
 
     if (dormitorios > 0) {
       sql = "${sql} and dormitorios >= ${dormitorios} ";
