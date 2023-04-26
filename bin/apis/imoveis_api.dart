@@ -3,7 +3,9 @@ import 'package:shelf/shelf.dart';
 import 'package:shelf_router/shelf_router.dart';
 import '../models/comodidades.dart';
 import '../models/imovel_model.dart';
+import '../models/lead_model.dart';
 import '../services/http/imovel_out.dart';
+import '../services/http/lead_out.dart';
 import '../services/imagem_inteface.dart';
 import '../services/imovel_inteface.dart';
 import 'api.dart';
@@ -139,6 +141,14 @@ class ImovelApi extends Api {
       return result ? Response(201) : Response(500);
     });
 
+    router.post('/lead', (Request req) async {
+      var body = await req.readAsString();
+      var result = await LeadOut().postLead(Lead.fromRequest(jsonDecode(body)));
+
+      return result > 0
+          ? Response.ok(jsonEncode({'id': result, 'success': true}))
+          : Response(500);
+    });
     router.put('/imoveis', (Request req) async {
       List<ImovelModel> imoveis = await ImovelOut().getImoveis();
       int updateLength = 0;
